@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mx.ApiRestTienda.model.Productos;
 import com.mx.ApiRestTienda.service.ProductosServicioImolmp;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -87,6 +89,17 @@ public class ProductosWebService {
 		}
 	}
 	
+	//http://localhost:9000/ProductosWebService/buscarId/sabritas
+
+	@GetMapping(path = "buscar/{nombre}")
+	public Productos buscarXnombre(@PathVariable("nombre") String nombre) {
+		return productosServicioImolmp.buscarXNombre(nombre);
+	}
+	
+	@GetMapping(path = "buscarPrecio")
+	public List<Productos> buscarXprecio(@RequestBody Productos producto) {
+		return productosServicioImolmp.buscarXprecio(producto.getPrecio());
+	}
 	
 }
 

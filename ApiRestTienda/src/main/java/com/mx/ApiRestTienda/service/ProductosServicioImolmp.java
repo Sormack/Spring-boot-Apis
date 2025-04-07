@@ -75,7 +75,14 @@ public class ProductosServicioImolmp {
 		}
 		return bandera;
 	}
-	
+	@Transactional(readOnly = true )
+	public Productos buscarXNombre(String nombre) {
+		return productosDao.findByNombre(nombre);
+	}
+	@Transactional(readOnly = true)
+	public List<Productos> buscarXprecio(Float precio){
+		return productosDao.buscarXprecio(precio);
+	}
 }
 
 

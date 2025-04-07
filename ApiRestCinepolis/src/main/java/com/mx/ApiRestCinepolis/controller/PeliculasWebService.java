@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,7 @@ public class PeliculasWebService {
 	@Autowired
 	PeliculasImplementacion pli;
 	//http://localhost:9000/cinepolis/mostrar
+	Peliculas pelicula = null;
 	@GetMapping(path = "mostrar")
 	public List<Peliculas> listaPeliculas() {
 		return pli.mostrarPeliculas();
@@ -68,6 +71,27 @@ public class PeliculasWebService {
 		}else {
 			return new ResponseEntity<>("Eliminado con exito", HttpStatus.OK);
 		}
+	}
+	
+	//http://localhost:9000/cinepolis/buscarNombre
+	@PostMapping(path = "buscarNombre")
+	public Peliculas buscarXnoombre(@RequestBody Peliculas pelicula) {
+		return pli.buscarXnombre(pelicula.getNombre());
+	}
+	
+	//http://localhost:9000/cinepolis/buscar/TERROR
+	@GetMapping(path = "buscar/{genero}")
+	public Peliculas buscarXgenero(@PathVariable ("genero") String genero) {
+		return pli.buscarXgenero(genero);
+	}
+	@PostMapping(path = "buscar")
+	public List<Peliculas> buscarPelicula(@RequestBody Peliculas pelicula) {
+		return pli.buscar(pelicula);
+	}
+	
+	@DeleteMapping(path = "elimarNombre")
+	public void eliminarPelicula(@RequestBody Peliculas pelicula) {
+		pli.eliminarXnombre(pelicula.getNombre());
 	}
 	
 }

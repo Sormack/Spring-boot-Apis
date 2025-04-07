@@ -1,10 +1,14 @@
 package com.mx.ApiRestCinepolis.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mx.ApiRestCinepolis.dao.PeliculasDao;
 import com.mx.ApiRestCinepolis.model.Peliculas;
@@ -68,10 +72,56 @@ public class PeliculasImplementacion {
 		Peliculas peliculaEncontrado = ipd.findById(idPelicula).orElse(null);
 		boolean bandera = false;
 		if(peliculaEncontrado !=null) {
-			ipd.deleteById(idPelicula);;
+			ipd.deleteById(idPelicula);
 			bandera = true;
 		}
 		return bandera;
+	}
+	
+	@Transactional
+	public Peliculas buscarXnombre(String nombre) {
+		List<Peliculas> listaPeliculas = ipd.findAll();
+		for(Peliculas p: listaPeliculas) {
+			if(p.getNombre().equals(nombre)) {
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
+	public Peliculas buscarXgenero(String genero) {
+		List<Peliculas> listaPeliculas = ipd.findAll();
+		for(Peliculas p: listaPeliculas) {
+			if(p.getGenero().equals(genero)) {
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
+	public List<Peliculas> buscar(Peliculas pelicula){
+		List<Peliculas> listaPeliculasEncontradas = new ArrayList<>();
+		for(Peliculas p: ipd.findAll()) {
+			if(p.getNombre().equals(pelicula.getNombre())){
+				listaPeliculasEncontradas.add(p);
+			}else if(p.getPrecio().equals(pelicula.getPrecio())) {
+				listaPeliculasEncontradas.add(p);
+			}else if(p.getGenero().equals(pelicula.getGenero())) {
+				listaPeliculasEncontradas.add(p);
+			}
+		}
+		return listaPeliculasEncontradas;
+	}
+	
+	public void eliminarXnombre(String nombre) {
+		List<Peliculas> listaPeliculas = ipd.findAll();
+		for(Peliculas p: listaPeliculas) {
+			if(p.getNombre().equals(nombre)){
+				ipd.deleteById(p.getIdPelicula());
+			}
+		}
 	}
 	
 }
